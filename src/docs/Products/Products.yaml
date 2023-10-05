@@ -1,0 +1,152 @@
+paths:
+  /api/products:
+    get:
+      summary: Obtiene todos los productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos fueron devueltos satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Products"
+        "500":
+          description: Error del servidor. Usualmente generando la query o falla la conexion a la DB
+  /api/products/{id}:
+    get:
+      summary: Obtiene producto con id
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del producto que se busca
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Productos devuelto satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Products"
+        "500":
+          description: Error del servidor. Usualmente generando la query o falla la conexion a la DB
+  /api/products/mockingproducts:
+    get:
+      summary: Obtiene 100 productos generados con fake
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos fueron devueltos satisfactoriamente
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Productsmock"
+        "500":
+          description: Error del servidor. Usualmente generando la query o falla la conexion a la DB
+components:
+  schemas:
+    Products:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID auto generado by mongo
+        title:
+          type: String
+          description: Titulo
+        description:
+          type: String
+          description: Descripcion
+        price:
+          type: Number
+          description: Precio
+        thumbnails:
+          type: Array
+          description: Array de fotos del producto
+        code:
+          type: String
+          description: Codigo
+        stock:
+          type: Number
+          description: Stock del producto
+        status:
+          type: String
+          description: estado del producto
+        category:
+          type: String
+          description: Categoria del producto
+        owner:
+          type: String
+          description: Email del dueño del producto
+      example:
+        owner: admin
+        _id: 648291218326a11ee3de9643
+        title: producto 10
+        description: descripcion 10
+        price: 110
+        thumbnails: [1,2,3]
+        code: code10
+        stock: 58
+        status: true
+        category: almacen
+        __v: 0
+    Productsmock:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID auto generado by mongo
+        title:
+          type: String
+          description: Titulo
+        price:
+          type: Number
+          description: Precio
+        image:
+          type: string
+          description: foto del producto
+        stock:
+          type: Number
+          description: Stock del producto
+        department:
+          type: String
+          description: Categoria del producto
+      example:
+        title: Handmade Cotton Chips
+        price: 126.00,
+        department: Computers,
+        stock: 6,
+        id: 1b06ec44eca437a3d6c4fcb3,
+        image: https://loremflickr.com/640/480/nature
+  requestBodies:
+    updateUser:
+      type: object
+      properties:
+        first_name:
+          type: String
+          description: Primer nombre
+        last_name:
+          type: String
+          description: Apellido
+        email:
+          type: String
+          description: Email de usuario
+        password:
+          type: String
+          description: Password hasheado del user
+      example:
+        first_name: Adrian
+        last_name: Campo
+        email: atrian@gmail.com
+        password: $2b$10$Cf.uErjQ/lEzypTNfyE1IuFGxVXSRqGzjFWBYwL9KLK4Fe29kvu.e
+
+

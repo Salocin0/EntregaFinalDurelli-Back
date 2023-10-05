@@ -1,0 +1,50 @@
+
+<div>
+  <script type="module" src="/js/products.js"></script>
+
+  <h1>Todos los productos</h1>
+  <h2>Bienvenido {{user.firstName}}, {{user.lastName}}, {{user.email}}, rol: {{user.rol}}</h2>
+  <a href='/api/sessions/logout'>LOGOUT</a>
+  <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="dinamic-product-list">
+            {{#each p}}
+            <tr>
+                <td>{{this.name}}</td>
+                <td>{{this.description}}</td>
+                <td>{{this.price}}</td>
+                <td>
+                <button class="btn-add" type="button" value="{{this.id}}">agregar al carrito</button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+  
+    <hr />
+    <hr />
+
+    {{prevPage}}
+    {{#if hasPrevPage}}
+      <a href="{{prevLink}}">⬅️</a>
+    {{/if}}
+    {{page}}
+    {{#if hasNextPage}}
+      <a href="{{nextLink}}">➡️</a>
+    {{/if}}
+    {{nextPage}}
+
+    <a id="carrito" href="http://localhost:8080/vista/cart/{{cartid}}" value={{cartid}}>🛒</a>
+  </div>
+  <a href='/logout'>LOGOUT</a>
+</div>
+
+
+        

@@ -1,0 +1,51 @@
+<div>
+  <h1>Todos los productos del carrito {{cid}}</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody id='dinamic-product-list'>
+      {{#if p.length}}
+        {{#each p}}
+          <tr>
+            <td>{{this.name}}</td>
+            <td>{{this.description}}</td>
+            <td>{{this.price}}</td>
+          </tr>
+        {{/each}}
+      {{else}}
+        <tr>
+          <td colspan='4'>No hay productos en el carrito</td>
+        </tr>
+      {{/if}}
+
+    </tbody>
+  </table>
+  <a id='purchase-link' href='http://localhost:8080/api/carts/{{cid}}/purchase'>finalizar compra</a>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const purchaseLink = document.getElementById("purchase-link");
+
+    purchaseLink.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      const url = purchaseLink.getAttribute("href");
+
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+        })
+        .catch((error) => {
+        });
+    });
+  });
+</script>

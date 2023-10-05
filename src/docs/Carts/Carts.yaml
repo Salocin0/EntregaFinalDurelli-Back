@@ -1,0 +1,241 @@
+paths:
+  /api/carts:
+    get:
+      summary: Obtiene todos los carts
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Los carritos fueron devueltos satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Carts"
+        "500":
+          description: Error del servidor. Usualmente generando la query o falla la conexion a la DB
+  /api/carts/{id}:
+    get:
+      summary: Obtiene un cart
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del carrito que se busca
+          schema:
+            type: string
+      responses:
+        "200":
+          description: cart encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Cart"
+        "500":
+          description: Error del servidor. Usualmente generando la query o falla la conexion a la DB
+    put:
+      summary: Actualizar un cart a partir del ID
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del carrito que se busca actualizar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: carrito actualizar exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/CartUpdated"
+    delete:
+      summary: elimina un carrito a partir del ID
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del carrito que se elimina
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Carrito elimina exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/CartDeleted"
+  /api/carts/{cid}/products/{pid}:
+    put:
+      summary: agrega un producto a un cart a partir del ID del carrito y del producto
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito que se busca actualizar
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto que se quiere agregar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: carrito actualizar exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/CartUpdated"
+    delete:
+      summary: elimina un carrito a partir del ID
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del carrito que se eliminar
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto que se quiere eliminar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Carrito elimina exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/CartDeleted"
+components:
+  schemas:
+    Carts:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID auto generado by mongo
+        first_name:
+          type: string
+          description: Primer nombre
+        last_name:
+          type: string
+          description: Apellido
+        email:
+          type: string
+          description: Email de usuario
+        password:
+          type: string
+          description: Password hasheado del user
+      example:
+        status: success
+        msg: Found all carts
+        data:
+          _id: "64d810202b8888c36b198477"
+          products:
+            - quantity: 2
+              id: "648291258326a11ee3de9645"
+              _id: "64d8129b42191be93fb767a7"
+          user: "64d77656fe0dcbdca2d3b3fb"
+          __v: 0
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID auto generado by mongo
+        first_name:
+          type: string
+          description: Primer nombre
+        last_name:
+          type: string
+          description: Apellido
+        email:
+          type: string
+          description: Email de usuario
+        password:
+          type: string
+          description: Password hasheado del user
+      example:
+        status: success
+        msg: Found cart
+        data:
+          _id: "64d810202b8888c36b198477"
+          products:
+            - quantity: 2
+              id: "648291258326a11ee3de9645"
+              _id: "64d8129b42191be93fb767a7"
+          user: "64d77656fe0dcbdca2d3b3fb"
+          __v: 0
+    CartUpdated:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID auto generado by mongo
+        first_name:
+          type: string
+          description: Primer nombre
+        last_name:
+          type: string
+          description: Apellido
+        email:
+          type: string
+          description: Email de usuario
+        password:
+          type: string
+          description: Password hasheado del user
+      example:
+        status: success
+        msg: product in cart updated
+        data:
+          _id: "64d810202b8888c36b198477"
+          products:
+            - quantity: 2
+              id: "648291258326a11ee3de9645"
+              _id: "64d8129b42191be93fb767a7"
+          user: "64d77656fe0dcbdca2d3b3fb"
+          __v: 0
+    CartDeleted:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID auto generado by mongo
+        first_name:
+          type: string
+          description: Primer nombre
+        last_name:
+          type: string
+          description: Apellido
+        email:
+          type: string
+          description: Email de usuario
+        password:
+          type: string
+          description: Password hasheado del user
+      example:
+        status: success
+        msg: products deleted in cart
+        data:
+          _id: "64d810202b8888c36b198477"
+          products:
+            - quantity: 2
+              id: "648291258326a11ee3de9645"
+              _id: "64d8129b42191be93fb767a7"
+          user: "64d77656fe0dcbdca2d3b3fb"
+          __v: 0
