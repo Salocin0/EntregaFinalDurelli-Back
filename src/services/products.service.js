@@ -2,6 +2,8 @@ import importModels from '../DAO/factory.js';
 const models = await importModels();
 const modelProduct = models.products;
 import { UserModel } from '../DAO/models/mongoose/users.model.js';
+import { userService } from './users.service.js';
+import transport from '../utils/nodemailer.js';
 
 class ProductService {
   validatePostProduct(title, description, code, price, status, stock, category, thumbnails) {
@@ -94,6 +96,14 @@ class ProductService {
 
   async deleteProduct(id,user) {
     this.validateId(id);
+    if(user.rol==="premium"){
+      const result = await transport.sendMail({
+        from: enviromentConfig.googleEmail,
+        to: user.email,
+        subject: 'RECUPERACION',
+        text: `hola, se elimino su producto con el id ${id}`
+      });
+    }
     const deleted = await modelProduct.deleteProduct(id,user);
     return deleted;
   }
