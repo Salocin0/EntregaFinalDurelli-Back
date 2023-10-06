@@ -1,5 +1,5 @@
 import express from 'express';
-import { isUserOwner, isUser } from '../middlewares/auth.js';
+import { isUserOwner, checkLogin } from '../middlewares/auth.js';
 import { cartController } from '../controllers/carts.controller.js';
 export const routerCarts = express.Router();
 
@@ -15,7 +15,7 @@ routerCarts.delete('/:cid/products/:pid', cartController.deleteProductInCart);
 
 routerCarts.delete('/:cid', cartController.deleteCart);
 
-routerCarts.post('/', isUser ,cartController.create);
+routerCarts.post('/',checkLogin ,cartController.create);
 
 routerCarts.post('/:cid/product/:pid', isUserOwner, cartController.addProductoToCart);
 

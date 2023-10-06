@@ -1,3 +1,5 @@
+import { selectedLogger } from './../utils/logger.js';
+
 class LoggerService {
   async test() {
     selectedLogger.debug('debug');
@@ -5,10 +7,7 @@ class LoggerService {
     selectedLogger.info('info');
     selectedLogger.warn('warn');
     selectedLogger.error('error');
-    return res.status(200).json({
-      status: 'success',
-      msg: 'all logs',
-    });
+    return true;
   }
 }
 

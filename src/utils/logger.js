@@ -6,6 +6,11 @@ const loggerDev = winston.createLogger({
       level: 'debug',
       format: winston.format.colorize({ all: true }),
     }),
+    new winston.transports.File({
+      filename: './errors.DEV.log',
+      level: 'error',
+      format: winston.format.simple(),
+    }),
   ],
 });
 
@@ -16,7 +21,7 @@ const loggerProd = winston.createLogger({
       format: winston.format.colorize({ all: true }),
     }),
     new winston.transports.File({
-      filename: './errors.log',
+      filename: './errors.PROD.log',
       level: 'error',
       format: winston.format.simple(),
     }),

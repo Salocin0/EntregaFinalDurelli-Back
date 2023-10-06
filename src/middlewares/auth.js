@@ -41,7 +41,7 @@ export async function isUserOwner(req, res, next) {
 
 export function checkLogin(req, res, next) {
   try {
-    if (req.session?.user?.firstName) {
+    if (req.session?.user?.email) {
       return next();
     }
   } catch (e) {

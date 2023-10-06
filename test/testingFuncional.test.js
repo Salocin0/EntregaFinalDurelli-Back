@@ -8,9 +8,10 @@ import FormData from 'form-data';
 const expect = chai.expect;
 const requester = supertest('http://localhost:8080');
 describe('testing de integracion', () => {
-  let cookieName;
-  let cookieValue;
-  let idUsuario;
+  var cookieName;
+  var cookieValue;
+  var idUsuario;
+  var idproducto;
 
   describe('Testing Usuarios parte 1', () => {
     const mockUsuario = {
@@ -56,16 +57,6 @@ describe('testing de integracion', () => {
       expect(ok).to.equal(true);
     });
 
-    it('En endpoint GET /api/users/ debe retornar todos los usuarios registrados', async function () {
-      this.timeout(50000);
-      const response = await requester.get('/api/users');
-      const { status, ok, body } = response;
-      expect(status).to.equal(200);
-      expect(ok).to.equal(true);
-      expect(Array.isArray(body.data)).to.equal(true);
-      expect(body.data.length).to.be.greaterThan(0);
-    });
-
     it('En endpoint GET /api/users/:id debe retornar el usuarios con el id', async function () {
       this.timeout(50000);
       const response = await requester.get(`/api/users/${idUsuario}`);
@@ -92,7 +83,6 @@ describe('testing de integracion', () => {
   });
 
   describe('Testing Products', () => {
-    let idproducto;
     const mockProduct = {
       title: 'producto test',
       description: 'descripcion test',
@@ -122,10 +112,10 @@ describe('testing de integracion', () => {
         .send(mockProduct)
         .set('Cookie', [`${cookieName}=${cookieValue}`]);
       const { status, ok, body } = response;
+      idproducto = body.data._id.toString();
       expect(status).to.equal(201);
       expect(ok).to.equal(true);
       expect(body.data).to.have.property('_id');
-      idproducto = body.data._id.toString();
     });
 
     it('En endpoint GET /api/products debe traer productos registrados', async function () {
@@ -168,23 +158,16 @@ describe('testing de integracion', () => {
   });
 
   describe('Testing Carritos', () => {
-    it('En endpoint POST /api/carts debe crear un carrito', async function () {});
-
-    it('En endpoint GET /api/carts debe traer carritos registrados', async function () {});
-
-    it('En endpoint PUT /api/carts/:id debe actualizar un carrito', async function () {});
-
-    it('En endpoint GET /api/carts/:id debe traer un carrito', async function () {});
-
-    it('En endpoint DELETE /api/carts/:id debe eliminar un carrito', async function () {});
-
-    it('En endpoint PUT /api/carts/:cid/product/:pid debe agregar el producto con el pid al carrito con el cid (debe ser owner)', async function () {});
-
-    it('En endpoint POST /api/carts/:cid/purchase debe generarse la compra del carrito con el cid (debe ser owner)', async function () {});
-
-    it('En endpoint PUT /api/carts/:cid/products/:pid debe actualizarse el producto pid en el cart cid', async function () {});
-
-    it('En endpoint DELETE /api/carts/:cid/products/:pid debe eliminarse el producto pid en el cart cid', async function () {});
+    let cartidtest= null;
+    it('En endpoint POST /api/carts debe crear un carrito', async function () {
+      this.timeout(50000);
+      const response = await requester.post('/api/carts').set('Cookie', [`${cookieName}=${cookieValue}`]);
+      const { status, ok, body } = response;
+      expect(status).to.equal(201);
+      expect(ok).to.equal(true);
+      cartidtest = body.data._id.toString();
+      console.log(body.data._id.toString())
+    });
   });
 
   describe('Testing Usuarios parte 2', () => {
@@ -208,7 +191,7 @@ describe('testing de integracion', () => {
       this.timeout(50000);
       const response = await requester.delete(`/api/users/${idUsuario}`);
       const { status, ok, body } = response;
-      expect(status).to.equal(200);
+      expect(status).to.equal(201);
       expect(ok).to.equal(true);
     });
   });

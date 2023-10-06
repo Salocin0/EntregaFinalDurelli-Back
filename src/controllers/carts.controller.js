@@ -32,7 +32,7 @@ class CartController {
         name: 'Error Del Servidor',
         cause: 'Ocurrió un error inesperado en el servidor. La operación no pudo completarse.',
         message: 'Lo sentimos, ha ocurrido un error inesperado en el servidor. Por favor, contacta al equipo de soporte.',
-        code: EErrors.ERROR_INTERNO_SERVIDOR,
+        code: EErrors.SERVER_ERROR,
       });
     }
   }
@@ -59,7 +59,7 @@ class CartController {
         name: 'Error Del Servidor',
         cause: 'Ocurrió un error inesperado en el servidor. La operación no pudo completarse.',
         message: 'Lo sentimos, ha ocurrido un error inesperado en el servidor. Por favor, contacta al equipo de soporte.',
-        code: EErrors.ERROR_INTERNO_SERVIDOR,
+        code: EErrors.SERVER_ERROR,
       });
     }
   }
@@ -80,15 +80,16 @@ class CartController {
           name: 'Error en Actualizacion',
           cause: 'Parametros Invalidos.',
           message: 'Se encontraron problemas con los parámetros proporcionados para la actualización. Por favor, verifica la información e inténtalo nuevamente.',
-          code: EErrors.ERROR_INTERNO_SERVIDOR,
+          code: EErrors.SERVER_ERROR,
         });
       }
     } catch (e) {
+      console.log(e)
       CustomError.createError({
         name: 'Error Del Servidor',
         cause: 'Ocurrió un error inesperado en el servidor. La operación no pudo completarse.',
         message: 'Lo sentimos, ha ocurrido un error inesperado en el servidor. Por favor, contacta al equipo de soporte.',
-        code: EErrors.ERROR_INTERNO_SERVIDOR,
+        code: EErrors.SERVER_ERROR,
       });
     }
   }
@@ -117,7 +118,7 @@ class CartController {
         name: 'Error Del Servidor',
         cause: 'Ocurrió un error inesperado en el servidor. La operación no pudo completarse.',
         message: 'Lo sentimos, ha ocurrido un error inesperado en el servidor. Por favor, contacta al equipo de soporte.',
-        code: EErrors.ERROR_INTERNO_SERVIDOR,
+        code: EErrors.SERVER_ERROR,
       });
     }
   }
@@ -146,7 +147,7 @@ class CartController {
         name: 'Error Del Servidor',
         cause: 'Ocurrió un error inesperado en el servidor. La operación no pudo completarse.',
         message: 'Lo sentimos, ha ocurrido un error inesperado en el servidor. Por favor, contacta al equipo de soporte.',
-        code: EErrors.ERROR_INTERNO_SERVIDOR,
+        code: EErrors.SERVER_ERROR,
       });
     }
   }
@@ -174,7 +175,7 @@ class CartController {
         name: 'Error Del Servidor',
         cause: 'Ocurrió un error inesperado en el servidor. La operación no pudo completarse.',
         message: 'Lo sentimos, ha ocurrido un error inesperado en el servidor. Por favor, contacta al equipo de soporte.',
-        code: EErrors.ERROR_INTERNO_SERVIDOR,
+        code: EErrors.SERVER_ERROR,
       });
     }
   }
@@ -198,11 +199,12 @@ class CartController {
         });
       }
     } catch (e) {
+      console.log(e)
       CustomError.createError({
         name: 'Error Del Servidor',
         cause: 'Ocurrió un error inesperado en el servidor. La operación no pudo completarse.',
         message: 'Lo sentimos, ha ocurrido un error inesperado en el servidor. Por favor, contacta al equipo de soporte.',
-        code: EErrors.ERROR_INTERNO_SERVIDOR,
+        code: EErrors.SERVER_ERROR,
       });
     }
   }
@@ -231,7 +233,7 @@ class CartController {
         name: 'Error Del Servidor',
         cause: 'Ocurrió un error inesperado en el servidor. La operación no pudo completarse.',
         message: 'Lo sentimos, ha ocurrido un error inesperado en el servidor. Por favor, contacta al equipo de soporte.',
-        code: EErrors.ERROR_INTERNO_SERVIDOR,
+        code: EErrors.SERVER_ERROR,
       });
     }
   }
@@ -260,7 +262,7 @@ class CartController {
         name: 'Error Del Servidor',
         cause: 'Ocurrió un error inesperado en el servidor. La operación no pudo completarse.',
         message: 'Lo sentimos, ha ocurrido un error inesperado en el servidor. Por favor, contacta al equipo de soporte.',
-        code: EErrors.ERROR_INTERNO_SERVIDOR,
+        code: EErrors.SERVER_ERROR,
       });
     }
   }

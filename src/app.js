@@ -29,6 +29,8 @@ import session from 'express-session';
 import { Server } from 'socket.io';
 import passport from 'passport';
 import express from 'express';
+import cors from "cors";
+
 connectMongo();
 //configuraciones
 const app = express();
@@ -50,6 +52,7 @@ const specs = swaggerJSDoc(swaggerOptions);
 iniPassport();
 
 //middlewares
+app.use(cors());
 app.use(addLogger);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -85,7 +88,7 @@ app.use(express.static(__dirname + '/public'));
   //api
 app.use('/api/products', routerProductos);
 app.use('/api/sessions', loginRouter);
-app.get('/loggerTest', loggerRouter);
+app.use('/api/loggerTest', loggerRouter);
 app.use('/api/carts', routerCarts);
 app.use('/api/users', routerUsers);
   //vista

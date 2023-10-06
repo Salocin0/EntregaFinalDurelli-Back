@@ -15,7 +15,7 @@ paths:
                   $ref: "#components/schemas/Carts"
         "500":
           description: Error del servidor. Usualmente generando la query o falla la conexion a la DB
-  /api/carts/{id}:
+  /api/carts/{cid}:
     get:
       summary: Obtiene un cart
       tags:
@@ -37,16 +37,32 @@ paths:
         "500":
           description: Error del servidor. Usualmente generando la query o falla la conexion a la DB
     put:
-      summary: Actualizar un cart a partir del ID
+      summary: Actualizar un carrito a partir del ID
       tags:
         - Carts
       parameters:
-        - name: id
+        - name: cid
           in: path
           required: true
           description: ID del carrito que se busca actualizar
           schema:
             type: string
+        - name: products
+          in: body
+          required: true
+          description: Objeto de productos del carrito
+          schema:
+            type: object
+            properties:
+              products:
+                type: object
+                properties:
+                  quantity:
+                    type: integer
+                    default: 1
+                  id:
+                    type: string
+                    default: "648291258326a11ee3de9645"
       responses:
         "200":
           description: carrito actualizar exitosamente
@@ -54,6 +70,7 @@ paths:
             application/json:
               schema:
                 $ref: "#components/schemas/CartUpdated"
+
     delete:
       summary: elimina un carrito a partir del ID
       tags:
