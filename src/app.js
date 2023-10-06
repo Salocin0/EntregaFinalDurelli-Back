@@ -46,7 +46,7 @@ const swaggerOptions = {
 const specs = swaggerJSDoc(swaggerOptions);
 
 //funciones de inicio
-connectMongo();
+
 iniPassport();
 
 //middlewares
@@ -118,5 +118,6 @@ const httpServer = app.listen(PORT, () => {
   console.log(`Levantando en puerto http://localhost:${PORT}`);
 });
 connectSocketServer(httpServer);
+connectMongo();
 //handle de errores
 app.use(errorHandler);
