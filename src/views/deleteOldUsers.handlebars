@@ -1,0 +1,56 @@
+<body>
+    <h1>Detalles del Usuario</h1>
+    <p>Nombre: {{user.firstName}}</p>
+    <p>Email: {{user.email}}</p>
+    <p>Rol: {{user.rol}}</p>
+
+    <h2>Acciones</h2>
+
+    <form id="modifyRoleForm">
+        <input type="hidden" name="userId" value="{{user.id}}">
+        <button type="button" id="modifyRoleButton">Modificar Rol</button>
+    </form>
+
+    <form id="deleteUserForm">
+        <input type="hidden" name="userId" value="{{user.id}}">
+        <button type="button" id="deleteUserButton">Eliminar Usuario</button>
+    </form>
+
+    <script>
+    $(document).ready(function () {
+        $("#modifyRoleButton").click(function () {
+            var userId = $("input[name='userId']").val();
+            $.ajax({
+                type: "GET",  
+                url: `http://localhost:8080/api/users/premium/${userId}`, 
+                data: { userId: userId },
+                success: function (response) {
+                    location.reload();
+                    alert("Rol modificado exitosamente.");
+                },
+                error: function (error) {
+                    alert(`Error al modificar el rol`);
+                }
+            });
+        });
+
+        
+        $("#deleteUserButton").click(function () {
+            var userId = $("input[name='userId']").val();
+            $.ajax({
+                type: "DELETE",  
+                url: `http://localhost:8080/api/users/${userId}`,
+                data: { userId: userId },
+                success: function (response) {
+                    alert("Usuario eliminado exitosamente.");
+                    window.location.href = "http://localhost:8080/vista/users";
+                },
+                error: function (error) {
+                    alert("Error al eliminar el usuario.");
+                }
+            });
+        });
+
+    });
+</script>
+</body>

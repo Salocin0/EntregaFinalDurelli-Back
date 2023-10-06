@@ -1,61 +1,48 @@
-import { Server } from 'socket.io';
-import { MsgModel } from '../DAO/models/mongoose/msgs.model.js';
-import { ProductsModel } from '../DAO/models/mongoose/products.model.js';
-import { selectedLogger as logger } from './logger.js';
+import { Server } from "socket.io";
+import { MessageModel } from '../DAO/models/db/msgs.model.db.js';
+import CustomError from '../services/errors/custom-error.js';
+import EErrors from '../services/errors/enums.js';
 
 export function connectSocketServer(httpServer) {
   const socketServer = new Server(httpServer);
 
-  socketServer.on('connection', async (socket) => {
-    try {
-      const allProducts = await ProductsModel.find({});
-      socket.emit('products', allProducts);
-    } catch (e) {
-      logger.error(e);
-    }
-
-    socket.on('new-product', async (newProd) => {
-      try {
-        await ProductsModel.create(newProd);
-        const prods = await ProductsModel.find({});
-        socketServer.emit('products', prods);
-      } catch (e) {
-        logger.error(e);
-      }
-    });
-
-    socket.on('productModified', async (id, newProd) => {
-      try {
-        await ProductsModel.findOneAndUpdate({ _id: id }, newProd);
-        const prod = await ProductsModel.find({});
-        socketServer.emit('products', prod);
-      } catch (e) {
-        logger.error(e);
-      }
-    });
-
-    socket.on('delete-product', async (idProd) => {
-      try {
-        await ProductsModel.deleteOne({ _id: idProd });
-        const prods = await ProductsModel.find({});
-        socketServer.emit('products', prods);
-      } catch (e) {
-        logger.error(e);
-      }
-    });
-
+  socketServer.on('connection', (socket) => {
     socket.on('msg_front_to_back', async (msg) => {
+      const msgCreated = await MessageModel.create(msg);
+      const msgs = await MessageModel.find({}); 
+      socketServer.emit('msg_back_to_front', msgs);
+    });
+  });
+
+  socketServer.on("connection", (socket) => {
+    socket.on("new-product-created", async (newProduct) => {
       try {
-        await MsgModel.create(msg);
-      } catch (e) {
-        logger.error(e);
-      }
+        await productApiService.addProduct(newProduct);
+
+        let allProducts = await productApiService.getProducts();
+        socketServer.emit("all-the-products", allProducts);
+      } catch (error) {
+        CustomError.createError({
+          name: 'Error De Conexion por Socket',
+          cause: 'No se pudo establecer una conexión con Socket',
+          message: 'Ocurrió un error al intentar conectarse con Socket.',
+          code: EErrors.SOCKET_CONNECTION_ERROR,
+        });      }
+    });
+
+    socket.on("delete-product", async (iidd) => {
       try {
-        const msgs = await MsgModel.find({});
-        socketServer.emit('listado_de_msgs', msgs);
-      } catch (e) {
-        logger.error(e);
-      }
+        await productApiService.deleteProduct(iidd);
+
+        let allProducts = await productApiService.getProducts();
+        socketServer.emit("all-the-products", allProducts);
+      } catch (error) {
+        CustomError.createError({
+          name: 'Error De Conexion por Socket',
+          cause: 'No se pudo establecer una conexión con Socket',
+          message: 'Ocurrió un error al intentar conectarse con Socket.',
+          code: EErrors.SOCKET_CONNECTION_ERROR,
+        });       }
     });
   });
 }

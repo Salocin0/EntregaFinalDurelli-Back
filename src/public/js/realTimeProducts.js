@@ -78,6 +78,8 @@ function setDelete(btnDelete) {
   };
 }
 
+
+
 setDelete(btnDelete);
 socket.on("delete-product-in-table", (idToDelete) => {
 

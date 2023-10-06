@@ -17,7 +17,7 @@ routerVistaProducts.get('/', async (req, res) => {
   const lastName = req.session.user?.lastName;
   const email = req.session.user?.email;
   const rol = req.session.user?.rol;
-  var cart = await cartService.getCart(req.session.user?._id.toString())
+  var cart = await cartService.getCart(req.session?.user?._id.toString())
   if(!cart){
     cart = await cartService.createCart(req.session.user?._id.toString())
   }
@@ -47,5 +47,6 @@ routerVistaProducts.get('/', async (req, res) => {
     nextLink: postLink,
     user: foundUser,
     cartid: cart._id.toString(),
+    isadmin: foundUser.rol === 'admin',
   });
 });

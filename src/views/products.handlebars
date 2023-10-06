@@ -1,10 +1,13 @@
 
 <div>
   <script type="module" src="/js/products.js"></script>
-
   <h1>Todos los productos</h1>
   <h2>Bienvenido {{user.firstName}}, {{user.lastName}}, {{user.email}}, rol: {{user.rol}}</h2>
   <a href='/api/sessions/logout'>LOGOUT</a>
+
+  {{#if isadmin}}
+  <a id="users" href="http://localhost:8080/vista/users/">Administracion de usuarios</a>
+{{/if}}
   <table>
         <thead>
             <tr>

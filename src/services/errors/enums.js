@@ -4,6 +4,7 @@ const EErrors = {
     UPDATE_ERROR:3,
     DELETE_ERROR:4,
     MONGO_CONNECTION_ERROR:5,
+    SOCKET_CONNECTION_ERROR:6,
 }
 
 export default EErrors

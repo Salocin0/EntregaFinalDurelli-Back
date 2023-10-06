@@ -1,6 +1,9 @@
 import chai from 'chai';
 import supertest from 'supertest';
 import { faker } from '@faker-js/faker';
+import { __dirname } from '../src/dirname.js';
+import fs from 'fs';
+import FormData from 'form-data';
 
 const expect = chai.expect;
 const requester = supertest('http://localhost:8080');
@@ -11,18 +14,16 @@ describe('testing de integracion', () => {
 
   describe('Testing Usuarios parte 1', () => {
     const mockUsuario = {
-      email:"nicolasarieldurelli2@gmail.com",
-      password:"123",
-      firstName:"nicolas",
-      lastName:"durelli",
-      age:23,
-    }
+      email: 'nicolasarieldurelli@gmail.com',
+      password: '123',
+      firstName: 'nicolas',
+      lastName: 'durelli',
+      age: 23,
+    };
 
     it('En endpoint POST /api/users debe crear un usuario "user"', async function () {
       this.timeout(50000);
-      const response = await requester
-        .post('/api/users')
-        .send(mockUsuario)
+      const response = await requester.post('/api/users').send(mockUsuario);
       const { status, ok, body } = response;
       expect(status).to.equal(201);
       expect(ok).to.equal(true);
@@ -30,11 +31,28 @@ describe('testing de integracion', () => {
       idUsuario = body.data._id.toString();
     });
 
-    it('En endpoint GET /api/users/premium/:id debe carmbiar el rol del usuario a "premium"', async function () {
+    it('En endpoint GET /api/users/premium/:id no debe carmbiar el rol del usuario a "premium" sin los documentos', async function () {
       this.timeout(50000);
       const response = await requester.get(`/api/users/premium/${idUsuario}`);
       const { status, ok, body } = response;
-      expect(status).to.equal(200);
+      expect(status).to.equal(400);
+      expect(ok).to.equal(false);
+    });
+
+    it('En endpoint GET /api/users/premium/:id debe cambiar el rol del usuario a "premium"', async function () {
+      this.timeout(50000);
+
+      const documentsToUpload = ['Comprobante de domicilio.txt', 'Comprobante de estado de cuenta.txt', 'Identificacion.txt'];
+      const documentPaths = documentsToUpload.map((document) => `${__dirname}/../test/docs/${document}`);
+
+      const documentUploadResponse = await requester.post(`/api/users/${idUsuario}/documents`).attach("documents", documentPaths[0]).attach("documents", documentPaths[1]).attach("documents", documentPaths[2]);
+
+      expect(documentUploadResponse.status).to.equal(200);
+      expect(documentUploadResponse.ok).to.equal(true);
+
+      const response = await requester.get(`/api/users/premium/${idUsuario}`);
+      const { status, ok } = response;
+      expect(status).to.equal(201);
       expect(ok).to.equal(true);
     });
 
@@ -171,18 +189,16 @@ describe('testing de integracion', () => {
 
   describe('Testing Usuarios parte 2', () => {
     const mockUsuarioUpdated = {
-      email:"nicolasarieldurelli2@gmail.com",
-      password:"123",
-      firstName:"nicolas",
-      lastName:"durelli",
-      age:50,
+      email: 'nicolasarieldurelli@gmail.com',
+      password: '123',
+      firstName: 'nicolas2',
+      lastName: 'durelli2',
+      age: 50,
     };
 
     it('En endpoint PUT /api/users/:id debe actualizar el usuario', async function () {
       this.timeout(50000);
-      const response = await requester
-        .put(`/api/users/${idUsuario}`)
-        .send(mockUsuarioUpdated)
+      const response = await requester.put(`/api/users/${idUsuario}`).send(mockUsuarioUpdated);
       const { status, ok, body } = response;
       expect(status).to.equal(201);
       expect(ok).to.equal(true);

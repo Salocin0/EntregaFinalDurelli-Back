@@ -54,3 +54,13 @@ loginRouter.use('/current', (req, res) => {
     payload: userSession || {},
   });
 });
+
+loginRouter.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
+
+loginRouter.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/error-autentificacion' }), (req, res) => {
+  req.session.firstName = req.user.firstName;
+  req.session.email = req.user.email;
+  res.clearCookie('userId');
+  res.cookie('userId', req.user._id, { maxAge: 3600000 });
+  res.redirect('/vista/products');
+});

@@ -1,17 +1,19 @@
 import { userService } from '../services/users.service.js';
 import CustomError from '../services/errors/custom-error.js';
 import EErrors from '../services/errors/enums.js';
-
+import { createHash } from '../utils/bcrypt.js';
+import UsersDTO from '../DAO/DTO/users.dto.js';
 
 class UserController {
   async getAll(req, res) {
     try {
       const users = await userService.getAllUsers();
+      const dtouser = users.map(user => new UsersDTO(user));
       if (users.length !== 0) {
         return res.status(200).json({
           status: 'success',
           msg: 'listado de usuarios',
-          data: users,
+          data: dtouser,
         });
       } else {
         CustomError.createError({
@@ -22,6 +24,7 @@ class UserController {
         });
       }
     } catch (e) {
+      console.log(e)
       CustomError.createError({
         name: 'Error Del Servidor',
         cause: 'Ocurrió un error inesperado en el servidor. La operación no pudo completarse.',
@@ -62,7 +65,7 @@ class UserController {
   async create(req, res) {
     try {
       const { firstName, lastName, email, age, password } = req.body;
-      const userCreated = await userService.createUser(firstName, lastName, email, age, password);
+      const userCreated = await userService.createUser(firstName, lastName, email, age,createHash(password) );
       return res.status(201).json({
         status: 'success',
         msg: 'user created',
@@ -101,7 +104,25 @@ class UserController {
 
   async delete(req, res) {
     try {
-      const { id } = req.params;
+      const deleted = await userService.deleteAllUsers();
+      return res.status(200).json({
+        status: 'success',
+        msg: 'users deleted',
+        data: deleted,
+      });
+    } catch (e) {
+      CustomError.createError({
+        name: 'Error Del Servidor',
+        cause: 'Ocurrió un error inesperado en el servidor. La operación no pudo completarse.',
+        message: 'Lo sentimos, ha ocurrido un error inesperado en el servidor. Por favor, contacta al equipo de soporte.',
+        code: EErrors.ERROR_INTERNO_SERVIDOR,
+      });
+    }
+  }
+
+  async deleteOne(req, res) {
+    const id = req.params.id;
+    try {
       const deleted = await userService.deleteUser(id);
       return res.status(200).json({
         status: 'success',
@@ -150,7 +171,7 @@ class UserController {
     try {
       const { uid } = req.params;
       const { files } = req;
-
+console.log(files);
       const documentos = userService.documents(uid,files);
 
       if (documentos) {

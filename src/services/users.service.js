@@ -1,6 +1,8 @@
 import CustomError from '../services/errors/custom-error.js';
 import EErrors from '../services/errors/enums.js';
 import importModels from '../DAO/factory.js';
+import transport from '../utils/nodemailer.js';
+import enviromentConfig from '../config/enviroment.config.js';
 
 const models = await importModels();
 const modelUsuario = models.users;
@@ -60,11 +62,42 @@ class UserService {
     return userUptaded;
   }
 
+  async deleteAllUsers() {
+    try {
+      const allUsers = await modelUsuario.getAllUsers();
+      const cutoffDate = new Date();
+      cutoffDate.setDate(cutoffDate.getDate() - 2);
+      const deletedUsers = [];
+      for (const user of allUsers) {
+        console.log(user)
+        if (user.lastConnection < cutoffDate) {
+          await modelUsuario.deleteUser(user.id);
+          deletedUsers.push(user);
+          const result = await transport.sendMail({
+            from: enviromentConfig.googleEmail,
+            to: user.email,
+            subject: 'Notificación de Eliminación de Cuenta por Inactividad',
+            text: 'Estimado usuario,\n\n' +
+                  'Le informamos que su cuenta ha sido eliminada debido a inactividad.\n\n' +
+                  'Para obtener más información o restaurar su cuenta, póngase en contacto con nuestro equipo de soporte.\n\n' +
+                  'Gracias por utilizar nuestros servicios.',
+          });
+        }
+      }
+  
+      return deletedUsers;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
   async deleteUser(id) {
     this.validateId(id);
     const deleted = await modelUsuario.deleteUser(id);
     return deleted;
   }
+  
 
   async changerol(id) {
     let userdb = await this.getOneUser(id);
@@ -94,7 +127,7 @@ class UserService {
 
     if (user) {
       const userDocuments = [];
-      console.log(files);
+      console.log(files,"algo")
       for (const file of files) {
         const document = {
           name: file.originalname,

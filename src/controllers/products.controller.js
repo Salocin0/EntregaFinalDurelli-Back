@@ -47,7 +47,7 @@ class ProductControler {
   async getOne(req, res) {
     try {
       const product = await productService.getProduct(req.params.id);
-      if (typeof product !== {}) {
+      if (product) {
         return res.status(200).json({
           status: 'sucess',
           msg: 'product found',
@@ -62,11 +62,12 @@ class ProductControler {
         });
       }
     } catch (e) {
+      console.log(e)
       CustomError.createError({
         name: 'Error Del Servidor',
         cause: 'Ocurrió un error inesperado en el servidor. La operación no pudo completarse.',
         message: 'Lo sentimos, ha ocurrido un error inesperado en el servidor. Por favor, contacta al equipo de soporte.',
-        code: EErrors.ERROR_INTERNO_SERVIDOR,
+        code: EErrors.SERVER_ERROR,
       });
     }
   }
@@ -75,6 +76,7 @@ class ProductControler {
     try {
       const owner = req.user.email 
       const { title, description, code, price, status = true, stock, category, thumbnails } = req.body;
+      console.log(owner,title)
       const ProductCreated = await productService.createProduct(title, description, code, price, status, stock, category, thumbnails,owner);
       if (ProductCreated.code === 400) {
         CustomError.createError({
