@@ -29,7 +29,7 @@ import session from 'express-session';
 import { Server } from 'socket.io';
 import passport from 'passport';
 import express from 'express';
-
+connectMongo();
 //configuraciones
 const app = express();
 const PORT = enviromentConfig.port;
@@ -118,6 +118,6 @@ const httpServer = app.listen(PORT, () => {
   console.log(`Levantando en puerto http://localhost:${PORT}`);
 });
 connectSocketServer(httpServer);
-connectMongo();
+
 //handle de errores
 app.use(errorHandler);
