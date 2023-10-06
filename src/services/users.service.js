@@ -69,7 +69,6 @@ class UserService {
       cutoffDate.setDate(cutoffDate.getDate() - 2);
       const deletedUsers = [];
       for (const user of allUsers) {
-        console.log(user)
         if (user.lastConnection < cutoffDate) {
           await modelUsuario.deleteUser(user.id);
           deletedUsers.push(user);
@@ -98,10 +97,8 @@ class UserService {
     return deleted;
   }
   
-
   async changerol(id) {
     let userdb = await this.getOneUser(id);
-    console.log(userdb);
     if (userdb.rol === 'premium') {
       userdb.rol = 'user';
     } else if (userdb.rol === 'user') {
@@ -117,7 +114,6 @@ class UserService {
     } else {
       userdb.rol = 'user';
     }
-    console.log(userdb);
     userdb = await this.updateUser(id, userdb.firstName, userdb.lastName, userdb.email, userdb.rol);
     return userdb;
   }
@@ -127,7 +123,6 @@ class UserService {
 
     if (user) {
       const userDocuments = [];
-      console.log(files,"algo")
       for (const file of files) {
         const document = {
           name: file.originalname,

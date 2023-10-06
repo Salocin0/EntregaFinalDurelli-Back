@@ -97,7 +97,6 @@ app.post('/recover-mail', recoverControler.recoverEmail);
 app.get('/error-autentificacion', (req, res) => {
   return res.status(400).render('error-page', { msg: 'error al loguear' });
 });
-app.use("/vista/products", routerVistaProductos);
 app.use('/vista/products', routerVistaProducts);
 app.use('/vista/users', routerVistaUsers);
 app.use('/vista/cart', routerVistaCart);

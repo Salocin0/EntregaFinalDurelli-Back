@@ -1,7 +1,7 @@
 import express from 'express';
 export const testChatRouter = express.Router();
-import { checkUser } from '../middlewares/auth.js';
+import { isUserNotAdmin } from '../middlewares/auth.js';
 
-testChatRouter.get('/', (req, res) => {
+testChatRouter.get('/',isUserNotAdmin, (req, res) => {
   return res.status(200).render('test-chat', {});
 });

@@ -24,7 +24,6 @@ class UserController {
         });
       }
     } catch (e) {
-      console.log(e)
       CustomError.createError({
         name: 'Error Del Servidor',
         cause: 'Ocurrió un error inesperado en el servidor. La operación no pudo completarse.',
@@ -72,7 +71,6 @@ class UserController {
         data: userCreated,
       });
     } catch (e) {
-      console.log(e);
       CustomError.createError({
         name: 'Error Del Servidor',
         cause: 'Ocurrió un error inesperado en el servidor. La operación no pudo completarse.',
@@ -157,7 +155,6 @@ class UserController {
         });
       }
     } catch (e) {
-      console.log(e);
       CustomError.createError({
         name: 'Error Del Servidor',
         cause: 'Ocurrió un error inesperado en el servidor. La operación no pudo completarse.',
@@ -171,7 +168,6 @@ class UserController {
     try {
       const { uid } = req.params;
       const { files } = req;
-console.log(files);
       const documentos = userService.documents(uid,files);
 
       if (documentos) {
@@ -183,7 +179,6 @@ console.log(files);
       }
 
     } catch (e) {
-      console.log(e);
       CustomError.createError({
         name: 'Error Del Servidor',
         cause: 'Ocurrió un error inesperado en el servidor. La operación no pudo completarse.',

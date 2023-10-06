@@ -8,6 +8,10 @@
   {{#if isadmin}}
   <a id="users" href="http://localhost:8080/vista/users/">Administracion de usuarios</a>
 {{/if}}
+
+{{#if isnotadmin}}
+  <a id="users" href="http://localhost:8080/test-chat/">Chat en vivo</a>
+{{/if}}
   <table>
         <thead>
             <tr>

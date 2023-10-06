@@ -24,8 +24,8 @@ export function isPremium(req, res, next) {
   return res.status(401).render('error-page', { msg: 'please log in as premium!' });
 }
 
-export function isUserNotAdmin(req, res, next) { //falta asignarlo al chat
-  if (req.session.email && req.session.admin == false) {
+export function isUserNotAdmin(req, res, next) {
+  if (req.session?.user?.rol !== 'admin') {
     return next();
   }
   return res.status(401).render('error-page', { msg: 'please log in USER NOT ADMIN!' });

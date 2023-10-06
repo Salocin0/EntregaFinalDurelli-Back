@@ -1,6 +1,6 @@
 <body>
     <h1>Lista de Usuarios</h1>
-    
+    <a href="/vista/products/{{this.id}}">Volver</a>
     <table>
         <thead>
             <tr>
@@ -17,7 +17,7 @@
                 <td>{{this.email}}</td>
                 <td>{{this.rol}}</td>
                 <td>
-                    <a href="/vista/users/editDelete/{{this.id}}">Editar</a> |
+                    <a href="/vista/users/editDelete/{{this.id}}">Editar</a>
                 </td>
             </tr>
             {{/each}}

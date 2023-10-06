@@ -48,5 +48,6 @@ routerVistaProducts.get('/', async (req, res) => {
     user: foundUser,
     cartid: cart._id.toString(),
     isadmin: foundUser.rol === 'admin',
+    isnotadmin: foundUser.rol !== 'admin',
   });
 });
