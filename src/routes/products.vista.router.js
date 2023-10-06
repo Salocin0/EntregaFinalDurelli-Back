@@ -5,7 +5,7 @@ import { cartService } from '../services/carts.service.js';
 export const routerVistaProducts = express.Router();
 
 routerVistaProducts.get('/', async (req, res) => {
-  const limit = req.query.limit || 3;
+  const limit = req.query.limit || 10;
   const page = req.query.page || 1;
   const query = req.query.query;
   const sort = req.query.sort;

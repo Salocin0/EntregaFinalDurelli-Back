@@ -4,10 +4,12 @@ const modelProduct = models.products;
 import { UserModel } from '../DAO/models/mongoose/users.model.js';
 import { userService } from './users.service.js';
 import transport from '../utils/nodemailer.js';
+import CustomError from './errors/custom-error.js';
+import EErrors from './errors/enums.js';
 
 class ProductService {
-  validatePostProduct(title, description, code, price, status, stock, category, thumbnails) {
-    if (!title || !description || !code || !price || !status || !stock || !category || !thumbnails) {
+  validatePostProduct(title, description, code, price, status, stock, category) {
+    if (!title || !description || !code || !price || !status || !stock || !category) {
       CustomError.createError({
         name: 'VALDIATION ERROR',
         cause: 'Parametros Faltantes o incorrectos.',
@@ -82,7 +84,7 @@ class ProductService {
         user: {},
       });
     } else {
-      this.validatePostProduct(title, description, code, price, status, stock, category, thumbnails);
+      this.validatePostProduct(title, description, code, price, status, stock, category);
       productcreated = await modelProduct.createProduct(title, description, code, price, status, stock, category, thumbnails,owner);
       return productcreated;
     }
@@ -96,7 +98,7 @@ class ProductService {
 
   async deleteProduct(id,user) {
     this.validateId(id);
-    if(user.rol==="premium"){
+    if(user?.rol==="premium"){
       const result = await transport.sendMail({
         from: enviromentConfig.googleEmail,
         to: user.email,

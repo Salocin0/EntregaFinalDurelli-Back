@@ -26,28 +26,34 @@ socket.on("repeat-code", (bool)=>{
   }
 })
 
-socket.on("products", (products) => {
-    let lastProduct = products.slice(-1).pop();
-    let container = document.getElementById("dinamic-product-list");
+window.addEventListener("load", async () => {
+  socket.emit("all-products");
+});
+
+socket.on("all-the-products", (pagProducts) => {
+  let container = document.getElementById("dinamic-product-list");
+  container.innerHTML = '';
+  const mappedProducts = pagProducts.products.docs.map(product => {
     let data = document.createElement("tr");
     container.append(data);
     data.innerHTML = `
-      <td>${lastProduct.id}</td>
-      <td>${lastProduct.title}</td>
-      <td>${lastProduct.description}</td>
-      <td>${lastProduct.price}</td>
-      <td>[${lastProduct.thumbnails}]</td>
-      <td>${lastProduct.code}</td>
-      <td>${lastProduct.stock}</td>
-      <td>${lastProduct.category}</td>
-      <td>${lastProduct.status}</td>
+      <td>${(product._id).toString()}</td>
+      <td>${product.title}</td>
+      <td>${product.description}</td>
+      <td>${product.price}</td>
+      <td>[${product.thumbnails}]</td>
+      <td>${product.code}</td>
+      <td>${product.stock}</td>
+      <td>${product.category}</td>
+      <td>${product.status}</td>
       <td>
-        <button type="button" class="btn-delete" value=${lastProduct.id}>Eliminar
+        <button type="button" class="btn-delete" value=${(product._id).toString()}>Eliminar
         </button>
       </td>
     `;
     btnDelete = document.querySelectorAll(".btn-delete");
     setDelete(btnDelete);
+  });
 });
 
 let btnDelete = document.querySelectorAll(".btn-delete");
@@ -77,8 +83,6 @@ function setDelete(btnDelete) {
     });
   };
 }
-
-
 
 setDelete(btnDelete);
 socket.on("delete-product-in-table", (idToDelete) => {

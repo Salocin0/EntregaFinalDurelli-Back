@@ -33,7 +33,7 @@ chatBox.addEventListener("keyup", ({ key }) => {
 	}
 });
 
-socket.on("listado_de_msgs", msgs => {
+socket.on("msg_back_to_front", msgs => {
 	const divMsgs = document.getElementById("div-msgs");
 	let formato = "";
 	msgs.forEach(msg => {
