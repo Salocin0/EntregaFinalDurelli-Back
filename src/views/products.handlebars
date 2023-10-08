@@ -3,6 +3,7 @@
   <script type="module" src="/js/products.js"></script>
   <h1>Todos los productos</h1>
   <h2>Bienvenido {{user.firstName}}, {{user.lastName}}, {{user.email}}, rol: {{user.rol}}</h2>
+  <input type="text" hidden id="email" value={{user.email}}>
   <a href='/api/sessions/logout'>LOGOUT</a>
 
   {{#if isadmin}}
@@ -53,6 +54,7 @@
   </div>
   <a href='/logout'>LOGOUT</a>
 </div>
-
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/products.js"></script>
 
         

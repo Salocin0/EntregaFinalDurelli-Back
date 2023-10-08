@@ -17,6 +17,6 @@ routerCarts.delete('/:cid', cartController.deleteCart);
 
 routerCarts.post('/',checkLogin ,cartController.create);
 
-routerCarts.post('/:cid/product/:pid', isUserOwner, cartController.addProductoToCart);
+routerCarts.post('/:cid/product/:pid', cartController.addProductoToCart);
 
 routerCarts.post('/:cid/purchase', isUserOwner, cartController.purchase);

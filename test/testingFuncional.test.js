@@ -166,7 +166,6 @@ describe('testing de integracion', () => {
       expect(status).to.equal(201);
       expect(ok).to.equal(true);
       cartidtest = body.data._id.toString();
-      console.log(body.data._id.toString())
     });
   });
 

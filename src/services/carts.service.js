@@ -1,6 +1,7 @@
 import EErrors from '../services/errors/enums.js';
 import CustomError from '../services/errors/custom-error.js';
 import importModels from '../DAO/factory.js';
+import { selectedLogger } from '../utils/logger.js';
 
 const models = await importModels();
 const modelProduct = models.products;
@@ -94,16 +95,14 @@ class CartService {
     const product = await modelProduct.getProduct(pid);
     const cart = await this.getCart(cid);
     let existingProduct = cart.products.find((p) => p.id._id.toString() === pid.toString());
-    if (!product.owner == email) {
-      if (existingProduct) {
-        existingProduct.quantity += 1;
-      } else {
-        let newProduct = {
-          id: pid.toString(),
-          quantity: 1,
-        };
-        cart.products.push(newProduct);
-      }
+    if (existingProduct) {
+      existingProduct.quantity += 1;
+    } else {
+      let newProduct = {
+        id: pid.toString(),
+        quantity: 1,
+      };
+      cart.products.push(newProduct);
     }
     const updatedCart = await this.updateCart(cid, cart.products);
     return updatedCart;
@@ -146,7 +145,7 @@ class CartService {
 
       if (productdb.stock >= product.quantity) {
         productdb.stock -= product.quantity;
-        //total
+        ticket.amount += Number(productdb.price) * Number(product.quantity);
         await modelProduct.updateProduct(
           productdb._id,
           productdb.title,
@@ -161,7 +160,7 @@ class CartService {
         updatedProducts.push(productdb);
       } else {
         product.quantity -= productdb.stock;
-        ticket.amount += productdb.price * productdb.stock;
+        ticket.amount += Number(productdb.price) * Number(productdb.stock);
         productdb.stock = 0;
         await modelProduct.updateProduct(
           productdb._id,
@@ -184,15 +183,13 @@ class CartService {
     cart.products = cart.products.filter((p) => !updatedProducts.some((updatedProduct) => updatedProduct._id.toString() === p.id._id.toString()));
 
     if (cart.products.length === 0) {
-      await this.deleteCart(id);
+      await this.updateCart(id, []);
     } else {
       await this.updateCart(id, cart.products);
     }
 
     await ticketsModel.create(ticket);
-
-    // Mandar el email aquí
-
+    selectedLogger.info(`Ticket ${ticket.code} creado`);
     return ticket;
   }
 }

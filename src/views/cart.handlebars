@@ -1,5 +1,6 @@
 <div>
   <h1>Todos los productos del carrito {{cid}}</h1>
+  <input type="text" hidden id="cart" value={{cid}}>
   <table>
     <thead>
       <tr>
@@ -27,25 +28,6 @@
   </table>
   <a id='purchase-link' href='http://localhost:8080/api/carts/{{cid}}/purchase'>finalizar compra</a>
 </div>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const purchaseLink = document.getElementById("purchase-link");
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/carrito.js"></script>
 
-    purchaseLink.addEventListener("click", (event) => {
-      event.preventDefault();
-
-      const url = purchaseLink.getAttribute("href");
-
-      fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-        })
-        .catch((error) => {
-        });
-    });
-  });
-</script>
