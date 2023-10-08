@@ -34,6 +34,7 @@ routerVistaProducts.get('/', async (req, res) => {
       name: product.title,
       description: product.description,
       price: product.price,
+      stock: product.stock,
       id: product._id,
     })),
     pagingCounter: allProducts.pagingCounter,
