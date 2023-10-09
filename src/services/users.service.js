@@ -57,7 +57,6 @@ class UserService {
   }
 
   async updateUser(id, firstName, lastName, email, rol) {
-    //this.validatePostUser(id, firstName, lastName, email);
     const userUptaded = await modelUsuario.updateUser(id, firstName, lastName, email, rol);
     return userUptaded;
   }
